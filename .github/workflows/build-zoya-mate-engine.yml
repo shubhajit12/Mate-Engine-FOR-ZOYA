@@ -1,0 +1,52 @@
+name: Build Zoya Mate Engine
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Unity Windows build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Unity-Library-${{ runner.os }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Unity-Library-${{ runner.os }}-
+
+      - name: Build Windows player
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          unityVersion: 6000.2.6f2
+          buildName: MateEngineX
+          versioning: None
+
+      - name: Package runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          cp -a build/StandaloneWindows64/. release/
+          test -f release/MateEngineX.exe
+          test -d release/MateEngineX_Data
+          test -f release/UnityPlayer.dll
+          7z a Zoya-Mate-Engine-Windows.zip ./release/*
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Zoya-Mate-Engine-Windows
+          path: Zoya-Mate-Engine-Windows.zip
+          if-no-files-found: error
