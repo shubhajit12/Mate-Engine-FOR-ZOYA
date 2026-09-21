@@ -13,6 +13,58 @@ jobs:
         with:
           lfs: true
 
+      # Unity 6's Linux/Crunch importer can crash inside the GameCI container
+      # while importing legacy crunched textures. Disable Crunch for the CI build.
+      # This only changes the generated player; it does not modify the repository.
+      - name: Disable Crunch texture compression for CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed=0
+          while IFS= read -r -d '' meta; do
+            if grep -qE '^[[:space:]]*crunchedCompression: 1[[:space:]]*        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Unity-Library-no-crunch-v2-${{ runner.os }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Unity-Library-no-crunch-v2-${{ runner.os }}-
+
+      - name: Build Windows player
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          unityVersion: 6000.2.6f2
+          buildName: MateEngineX
+          versioning: None
+
+      - name: Package runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          cp -a build/StandaloneWindows64/. release/
+          test -f release/MateEngineX.exe
+          test -d release/MateEngineX_Data
+          test -f release/UnityPlayer.dll
+          7z a Zoya-Mate-Engine-Windows.zip ./release/*
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Zoya-Mate-Engine-Windows
+          path: Zoya-Mate-Engine-Windows.zip
+          if-no-files-found: error
+ "$meta"; then
+              sed -i -E 's/^([[:space:]]*)crunchedCompression: 1[[:space:]]*$/\1crunchedCompression: 0/' "$meta"
+              changed=$((changed + 1))
+            fi
+          done < <(find Assets -type f -name '*.meta' -print0)
+          echo "Disabled Crunch in $changed texture meta files."
+
       - name: Cache Unity Library
         uses: actions/cache@v4
         with:
