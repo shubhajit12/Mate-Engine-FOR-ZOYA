@@ -138,12 +138,12 @@ public class SaveLoadHandler : MonoBehaviour
         public bool enableWindowSitting = false;
         public bool ambientOcclusion = false;
 
-        public float uiHueShift = 0f;
+        public float uiHueShift = 0.07f;
         public float uiSaturation = 1.0f;
 
         public bool enableDiscordRPC = true;
 
-        public bool tutorialDone = false;
+        public bool tutorialDone = true;
 
         public string selectedLocaleCode = "en";
         public bool enableIK = true;
@@ -220,9 +220,15 @@ public class SaveLoadHandler : MonoBehaviour
         if (string.IsNullOrEmpty(data.selectedParticleTheme)) data.selectedParticleTheme = "Standard";
         if (data == null) data = new SettingsData();
         if (data.alarms == null) data.alarms = new List<SettingsData.AlarmEntry>();
-        if (data.settingsVersion < 1)
+        // ZOYA branding: keep the desktop companion on the ZOYA orange theme.
+        // Existing Mate Engine saves are migrated to the branded palette.
+        data.uiHueShift = 0.07f;
+        data.uiSaturation = 1.0f;
+        data.tutorialDone = true;
+
+        if (data.settingsVersion < 2)
         {
-            data.settingsVersion = 1;
+            data.settingsVersion = 2;
             SaveToDisk();
         }
     }
