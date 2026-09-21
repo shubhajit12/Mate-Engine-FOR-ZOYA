@@ -52,28 +52,12 @@ public class TutorialMenu : MonoBehaviour
 
     private void Start()
     {
-        if (SaveLoadHandler.Instance != null && SaveLoadHandler.Instance.data.tutorialDone)
-        {
-            if (tutorialRoot != null) tutorialRoot.SetActive(false);
-            gameObject.SetActive(false);
-            IsActive = false;
-            return;
-        }
-
-        IsActive = true;
-
-        if (tutorialRoot != null && !tutorialRoot.activeSelf)
-            tutorialRoot.SetActive(true);
-
-        SetHideTargets(false);
-
-        if (skipButton) skipButton.onClick.AddListener(FinishTutorial);
-        if (finishButton) finishButton.onClick.AddListener(FinishTutorial);
-        if (nextButton) nextButton.onClick.AddListener(NextStep);
-        if (backButton) backButton.onClick.AddListener(PreviousStep);
-
-        currentStep = 0;
-        ApplyStep();
+        // ZOYA does not use the Mate Engine onboarding/tutorial screen.
+        // The desktop companion should show the avatar immediately on launch.
+        if (tutorialRoot != null) tutorialRoot.SetActive(false);
+        gameObject.SetActive(false);
+        IsActive = false;
+        SetHideTargets(true);
     }
 
     private void ApplyStep()
