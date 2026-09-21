@@ -60,6 +60,59 @@ public class UIThemeApplier : MonoBehaviour
 
 
 
+    void Awake()
+    {
+        ApplyZoyaPalette();
+        ApplyTheme();
+    }
+
+    void ApplyZoyaPalette()
+    {
+        // ZOYA brand palette: warm orange/amber UI on a dark background.
+        backgroundPanelColor = new Color(0.035f, 0.020f, 0.012f, 1f);
+        titleTextColor = Color.white;
+
+        sliderNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
+        sliderHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
+        sliderPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
+        sliderSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
+        sliderDisabledColor = Color.gray;
+        sliderLabelColor = Color.white;
+        sliderBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
+        sliderFillColor = new Color(0.949f, 0.490f, 0.149f, 1f);
+
+        toggleNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
+        toggleHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
+        togglePressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
+        toggleSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
+        toggleDisabledColor = Color.gray;
+        toggleLabelColor = Color.white;
+        toggleBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
+
+        buttonNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
+        buttonHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
+        buttonPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
+        buttonSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
+        buttonDisabledColor = Color.gray;
+        buttonTextColor = Color.white;
+
+        scrollbarNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
+        scrollbarHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
+        scrollbarPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
+        scrollbarSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
+        scrollbarDisabledColor = Color.gray;
+        scrollbarHandleColor = new Color(1f, 0.541f, 0.239f, 1f);
+        scrollbarBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
+
+        dropdownNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
+        dropdownHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
+        dropdownPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
+        dropdownSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
+        dropdownDisabledColor = Color.gray;
+        dropdownBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
+        dropdownTextColor = Color.white;
+    }
+
     [ContextMenu("Apply Theme Colors")]
     public void ApplyTheme()
     {
