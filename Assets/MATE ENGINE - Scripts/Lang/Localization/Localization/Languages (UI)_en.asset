@@ -171,7 +171,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2011903232565248
-    m_Localized: "Welcome to \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (Zoya Zoya Zoya Mate Engine)"
+    m_Localized: "Welcome to \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (Zoya Mate Engine)"
     m_Metadata:
       m_Items: []
   - m_Id: 2012023386791936
@@ -182,11 +182,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2012176361447424
-    m_Localized: How to Use Zoya Zoya Zoya Mate Engine (Speedrun)
+    m_Localized: How to Use Zoya Mate Engine (Speedrun)
     m_Metadata:
       m_Items: []
   - m_Id: 2012219415977984
-    m_Localized: "Using Zoya Zoya Zoya Mate Engine is really easy! Just right-click to open the Options
+    m_Localized: "Using Zoya Mate Engine is really easy! Just right-click to open the Options
       menu. There, you can change the avatar size, enable or disable effects, whitelist
       apps that can make your avatar dance, or load mods and custom VRM/ME model
       files. In the next step, I\u2019ll explain how to load custom avatars."
@@ -209,9 +209,9 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2012464099090432
     m_Localized: "Sometimes a .VRM file might fail to load. This usually isn\u2019t
-      a Zoya Zoya Zoya Mate Engine issue, it\u2019s often due to incorrect shaders or armature setup
+      a Zoya Mate Engine issue, it\u2019s often due to incorrect shaders or armature setup
       during export. If this happens, check the official UniVRM documentation. Some
-      apps use fallback methods to fix broken models, but Zoya Zoya Zoya Mate Engine doesn't (and
+      apps use fallback methods to fix broken models, but Zoya Mate Engine doesn't (and
       won\u2019t). You're responsible for making sure your VRM is properly exported."
     m_Metadata:
       m_Items: []
@@ -577,7 +577,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using Zoya Zoya Zoya Mate Engine in Game
+    m_Localized: Displays in Discord that you are currently using Zoya Mate Engine in Game
       Activity on your Profile. It shows what your pet is doing, such as playing
       music, idling, sitting, and more.
     m_Metadata:
@@ -617,7 +617,7 @@ MonoBehaviour:
     m_Localized: "Enabling this allows the avatar to dance to your music. To make
       it work, click the settings icon next to this option and add the apps that
       can control the avatar\u2019s dancing. Some apps require music to be playing
-      first; while it plays, click the refresh icon so Zoya Zoya Zoya Mate Engine can detect the
+      first; while it plays, click the refresh icon so Zoya Mate Engine can detect the
       app."
     m_Metadata:
       m_Items: []
@@ -680,7 +680,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569544
-    m_Localized: "Welcome to \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (Zoya Zoya Zoya Mate Engine)"
+    m_Localized: "Welcome to \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (Zoya Mate Engine)"
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569545
@@ -691,11 +691,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569546
-    m_Localized: How to Use Zoya Zoya Zoya Mate Engine (Speedrun)
+    m_Localized: How to Use Zoya Mate Engine (Speedrun)
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569547
-    m_Localized: "Using Zoya Zoya Zoya Mate Engine is really easy! Just right-click to open the Options
+    m_Localized: "Using Zoya Mate Engine is really easy! Just right-click to open the Options
       menu. There, you can change the avatar size, enable or disable effects, whitelist
       apps that can make your avatar dance, or load mods and custom VRM/ME model
       files. In the next step, I\u2019ll explain how to load custom avatars."
@@ -718,9 +718,9 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 71028682261569551
     m_Localized: "Sometimes a .VRM file might fail to load. This usually isn\u2019t
-      a Zoya Zoya Zoya Mate Engine issue, it\u2019s often due to incorrect shaders or armature setup
+      a Zoya Mate Engine issue, it\u2019s often due to incorrect shaders or armature setup
       during export. If this happens, check the official UniVRM documentation. Some
-      apps use fallback methods to fix broken models, but Zoya Zoya Zoya Mate Engine doesn't (and
+      apps use fallback methods to fix broken models, but Zoya Mate Engine doesn't (and
       won\u2019t). You're responsible for making sure your VRM is properly exported."
     m_Metadata:
       m_Items: []
@@ -993,7 +993,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74137876288282624
-    m_Localized: 'This enables cross-interaction between Zoya Zoya Zoya Mate Engine and Minecraft.
+    m_Localized: 'This enables cross-interaction between Zoya Mate Engine and Minecraft.
       When activated, it shows cute messages during key moments: when day or night
       begins, when a dangerous mob is nearby, when your health or hunger is low,
       when you craft something, die, the weather changes, or you go to sleep. To
@@ -1023,7 +1023,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74429045333336064
-    m_Localized: Sync Mode enables dance synchronization across all Zoya Zoya Zoya Mate Engine instances.
+    m_Localized: Sync Mode enables dance synchronization across all Zoya Mate Engine instances.
       When activated, all avatars on your monitor will perform the same dance in
       perfect sync. Make sure to launch the other instances from the main instance,
       otherwise synchronization will not work.
@@ -1236,7 +1236,7 @@ MonoBehaviour:
     m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
       to speak during specific events, such as discovering new biomes or when a monster
       appears behind you. She reacts to your gameplay and comments on what you do.
-      Support Zoya Zoya Zoya Mate Engine on Steam to unlock this feature.
+      Support Zoya Mate Engine on Steam to unlock this feature.
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
@@ -1246,7 +1246,7 @@ MonoBehaviour:
       and more.
 
 
-      Zoya Zoya Zoya Mate Engine costs around 4.99 USD. If you cannot afford it,
+      Zoya Mate Engine costs around 4.99 USD. If you cannot afford it,
       the essential features stay free forever. If you can, consider supporting me
       for future updates. Thank you!'
     m_Metadata:
@@ -1298,7 +1298,7 @@ MonoBehaviour:
     m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
       to speak during specific events, such as discovering new biomes or when a monster
       appears behind you. She reacts to your gameplay and comments on what you do.
-      Support Zoya Zoya Zoya Mate Engine on Steam to unlock this feature.
+      Support Zoya Mate Engine on Steam to unlock this feature.
     m_Metadata:
       m_Items: []
   - m_Id: 78942879666446336
