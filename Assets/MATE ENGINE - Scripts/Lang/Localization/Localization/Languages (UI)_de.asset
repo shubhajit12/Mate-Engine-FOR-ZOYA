@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 96968105984
-    m_Localized: MATE ENGINE
+    m_Localized: Zoya Mate Engine
     m_Metadata:
       m_Items: []
   - m_Id: 11105833312256
@@ -218,7 +218,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2011903232565248
-    m_Localized: "Willkommen bei \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Localized: "Willkommen bei \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (Zoya Zoya Mate Engine)"
     m_Metadata:
       m_Items: []
   - m_Id: 2012023386791936
@@ -231,11 +231,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2012176361447424
-    m_Localized: So benutzt du MateEngine (Speedrun)
+    m_Localized: So benutzt du Zoya Zoya Mate Engine (Speedrun)
     m_Metadata:
       m_Items: []
   - m_Id: 2012219415977984
-    m_Localized: "MateEngine ist super einfach zu bedienen! Klicke einfach mit der
+    m_Localized: "Zoya Zoya Mate Engine ist super einfach zu bedienen! Klicke einfach mit der
       rechten Maustaste, um das Optionsmen\xFC zu \xF6ffnen. Dort kannst du die Avatargr\xF6\xDFe
       \xE4ndern, Effekte aktivieren oder deaktivieren, Apps auf die Whitelist setzen,
       die deinen Avatar tanzen lassen d\xFCrfen, oder Mods und eigene VRM-/ME-Modelldateien
@@ -260,10 +260,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2012464099090432
     m_Localized: "Manchmal kann es passieren, dass eine .VRM-Datei nicht geladen
-      wird. Das liegt meist nicht an MateEngine, sondern an falschen Shadern oder
+      wird. Das liegt meist nicht an Zoya Zoya Mate Engine, sondern an falschen Shadern oder
       einer fehlerhaften Armatur beim Export. In solchen F\xE4llen solltest du die
       offizielle UniVRM-Dokumentation pr\xFCfen. Manche Programme versuchen, defekte
-      Modelle zu reparieren \u2013 MateEngine tut das nicht (und wird es auch nicht).
+      Modelle zu reparieren \u2013 Zoya Zoya Mate Engine tut das nicht (und wird es auch nicht).
       Du bist selbst daf\xFCr verantwortlich, dass deine VRM korrekt exportiert ist."
     m_Metadata:
       m_Items: []
@@ -631,7 +631,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: "MateEngine wird gerade als Aktivit\xE4t in Discord angezeigt. Es
+    m_Localized: "Zoya Zoya Mate Engine wird gerade als Aktivit\xE4t in Discord angezeigt. Es
       wird angezeigt was dein Haustier gerade macht, wie Musik abspielen, unt\xE4tig
       sein, sitzen und weiteres."
     m_Metadata:
@@ -675,7 +675,7 @@ MonoBehaviour:
       Um es einzurichten, klicke auf das EInstellungs-Symbol neben dieser Funktion
       und f\xFCge die Apps hinzu, die die T\xE4nze des Avatars steuern k\xF6nnen.
       Einige Apps erfordern, dass Musik bereits l\xE4uft. Wenn die Musik l\xE4uft
-      klicke auf das Aktualisieren-Symbol, damit MateEngine die App erkennen kann. "
+      klicke auf das Aktualisieren-Symbol, damit Zoya Zoya Mate Engine die App erkennen kann. "
     m_Metadata:
       m_Items: []
   - m_Id: 71010482257960960
@@ -746,7 +746,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569544
-    m_Localized: "Willkommen bei \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Localized: "Willkommen bei \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (Zoya Zoya Mate Engine)"
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569545
@@ -759,11 +759,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569546
-    m_Localized: So benutzt du MateEngine (Speedrun)
+    m_Localized: So benutzt du Zoya Zoya Mate Engine (Speedrun)
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569547
-    m_Localized: "MateEngine ist super einfach zu bedienen! Klicke einfach mit der
+    m_Localized: "Zoya Zoya Mate Engine ist super einfach zu bedienen! Klicke einfach mit der
       rechten Maustaste, um das Optionsmen\xFC zu \xF6ffnen. Dort kannst du die Avatargr\xF6\xDFe
       \xE4ndern, Effekte aktivieren oder deaktivieren, Apps auf die Whitelist setzen,
       die deinen Avatar tanzen lassen d\xFCrfen, oder Mods und eigene VRM-/ME-Modelldateien
@@ -788,10 +788,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 71028682261569551
     m_Localized: "Manchmal kann es passieren, dass eine .VRM-Datei nicht geladen
-      wird. Das liegt meist nicht an MateEngine, sondern an falschen Shadern oder
+      wird. Das liegt meist nicht an Zoya Zoya Mate Engine, sondern an falschen Shadern oder
       einer fehlerhaften Armatur beim Export. In solchen F\xE4llen solltest du die
       offizielle UniVRM-Dokumentation pr\xFCfen. Manche Programme versuchen, defekte
-      Modelle zu reparieren \u2013 MateEngine tut das nicht (und wird es auch nicht).
+      Modelle zu reparieren \u2013 Zoya Zoya Mate Engine tut das nicht (und wird es auch nicht).
       Du bist selbst daf\xFCr verantwortlich, dass deine VRM korrekt exportiert ist."
     m_Metadata:
       m_Items: []
@@ -1074,7 +1074,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74137876288282624
-    m_Localized: "Diese Funktion erm\xF6glicht die Interaktion zwischen MateEngine
+    m_Localized: "Diese Funktion erm\xF6glicht die Interaktion zwischen Zoya Zoya Mate Engine
       und Minecraft und zeigt niedliche Nachrichten bei wichtigen Momenten wie Tageswechsel,
       gef\xE4hrlichen Mobs in der N\xE4he, niedrigem Gesundheits- oder Hungerzustand,
       beim Craften, Sterben, Wetter\xE4nderungen oder Schlafen; zur Nutzung installiere
@@ -1105,7 +1105,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74429045333336064
     m_Localized: "Der Sync-Modus erm\xF6glicht die Tanzsynchronisation \xFCber alle
-      MateEngine-Instanzen hinweg.\nWenn aktiviert, f\xFChren alle Avatare auf deinem
+      Zoya Zoya Mate Engine-Instanzen hinweg.\nWenn aktiviert, f\xFChren alle Avatare auf deinem
       Monitor denselben Tanz perfekt synchron aus.\nStelle sicher, dass du die anderen
       Instanzen von der Hauptinstanz aus startest, da die Synchronisation sonst nicht
       funktioniert."
@@ -1323,14 +1323,14 @@ MonoBehaviour:
       Sie erm\xF6glicht es dem Avatar, bei bestimmten Ereignissen zu sprechen \u2013
       zum Beispiel, wenn du neue Biome entdeckst oder ein Monster hinter dir auftaucht.
       Sie reagiert auf dein Gameplay und kommentiert, was du tust. Unterst\xFCtze
-      MateEngine auf Steam, um dieses Feature freizuschalten."
+      Zoya Zoya Mate Engine auf Steam, um dieses Feature freizuschalten."
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
     m_Localized: "Die Steam-Version enth\xE4lt vier Accessoires: Blumen-Halo, Sakura-Halo,
       Retro-Halo und Error-Gesichtsmaske. Au\xDFerdem f\xFCgt sie ein Feature hinzu:
       Ereignisbasierte Nachrichten, durch die der Avatar w\xE4hrend des Ziehens,
-      Tanzens, Sitzens, Entspannens und mehr sprechen kann.\n\nMateEngine kostet
+      Tanzens, Sitzens, Entspannens und mehr sprechen kann.\n\nZoya Zoya Mate Engine kostet
       etwa 4,99 USD. Wenn du es dir nicht leisten kannst, bleiben die wichtigsten
       Funktionen f\xFCr immer kostenlos. Wenn du kannst, erw\xE4ge bitte, mich f\xFCr
       zuk\xFCnftige Updates zu unterst\xFCtzen. Danke!"
@@ -1386,11 +1386,11 @@ MonoBehaviour:
       Sie erm\xF6glicht es dem Avatar, bei bestimmten Ereignissen zu sprechen \u2013
       zum Beispiel, wenn du neue Biome entdeckst oder ein Monster hinter dir auftaucht.
       Sie reagiert auf dein Gameplay und kommentiert, was du tust. Unterst\xFCtze
-      MateEngine auf Steam, um dieses Feature freizuschalten."
+      Zoya Zoya Mate Engine auf Steam, um dieses Feature freizuschalten."
     m_Metadata:
       m_Items: []
   - m_Id: 78942879666446336
-    m_Localized: Mate Engine Kaufen
+    m_Localized: Zoya Mate Engine Kaufen
     m_Metadata:
       m_Items: []
   - m_Id: 78942992686161920
