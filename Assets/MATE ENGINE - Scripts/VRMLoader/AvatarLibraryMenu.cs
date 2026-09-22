@@ -103,6 +103,9 @@ public class AvatarLibraryMenu : MonoBehaviour
 
     public void OpenLibrary()
     {
+        // ZOYA keeps Mate's official model assets in the runtime, but does not expose model switching.
+        return;
+
         libraryPanel.SetActive(true);
 
         var auto = FindFirstObjectByType<SteamWorkshopAutoLoader>();
