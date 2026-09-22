@@ -1,6 +1,7 @@
 using Kirurobo;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SettingsHandlerButtons : MonoBehaviour
 {
@@ -21,8 +22,28 @@ public class SettingsHandlerButtons : MonoBehaviour
     public GameObject uniWindowControllerObject;
     private UniWindowController uniWindowController;
 
+    private void HideModelManagementButtons()
+    {
+        // ZOYA uses one fixed companion model: Carlotta.vrm.
+        // Hide the original Mate model-management controls without touching
+        // the existing VRM loader or Carlotta startup-loading path.
+        string[] hiddenLabels = { "MODELS", "VRM/ME", "RESET" };
+        foreach (var label in hiddenLabels)
+        {
+            foreach (var text in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (text == null || !string.Equals(text.text?.Trim(), label, System.StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var target = text.transform.parent != null ? text.transform.parent.gameObject : text.gameObject;
+                target.SetActive(false);
+            }
+        }
+    }
+
     private void Start()
     {
+        HideModelManagementButtons();
         if (applyButton != null) applyButton.onClick.AddListener(OnApplyClicked);
         if (resetButton != null) resetButton.onClick.AddListener(OnResetClicked);
         if (windowSizeButton != null) windowSizeButton.onClick.AddListener(CycleWindowSize);
