@@ -50,20 +50,19 @@ jobs:
           buildName: MateEngineX
           versioning: None
 
-      - name: Package runtime
+      - name: Prepare runtime artifact
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p release
-          cp -a build/StandaloneWindows64/. release/
-          test -f release/MateEngineX.exe
-          test -d release/MateEngineX_Data
-          test -f release/UnityPlayer.dll
-          7z a Zoya-Mate-Engine-Windows.zip ./release/*
+          mkdir -p artifact/Zoya-Mate-Engine-Windows
+          cp -a build/StandaloneWindows64/. artifact/Zoya-Mate-Engine-Windows/
+          test -f artifact/Zoya-Mate-Engine-Windows/MateEngineX.exe
+          test -d artifact/Zoya-Mate-Engine-Windows/MateEngineX_Data
+          test -f artifact/Zoya-Mate-Engine-Windows/UnityPlayer.dll
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: Zoya-Mate-Engine-Windows
-          path: Zoya-Mate-Engine-Windows.zip
+          path: artifact/Zoya-Mate-Engine-Windows
           if-no-files-found: error
