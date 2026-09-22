@@ -29,10 +29,14 @@ public class VRMLoader : MonoBehaviour
     private const string LegacyModelPathKey = "SavedPathModel";
     private RuntimeGltfInstance currentGltf;
     private AssetBundle currentBundle;
-    private const string ZoyaCarlottaFileName = "Carlotta.vrm";
 
     void Start()
     {
+        // ZOYA ships with Carlotta as the only user-facing model. Keep the original loader intact,
+        // but hide the custom model import control so users cannot replace the model.
+        if (loadVRMButton != null)
+            loadVRMButton.gameObject.SetActive(false);
+
         string savedPath = SaveLoadHandler.Instance != null
             ? SaveLoadHandler.Instance.data.selectedModelPath
             : null;
@@ -104,20 +108,19 @@ public class VRMLoader : MonoBehaviour
 
     public void OpenFileDialogAndLoadVRM()
     {
-        // ZOYA is locked to Carlotta.vrm. Keep this method for scene compatibility,
-        // but never open a user model picker.
-        Debug.Log("[ZOYA] Custom model selection is disabled.");
+        if (isLoading) return;
+
+        isLoading = true;
+        var extensions = new[] { new ExtensionFilter("Model Files", "vrm", "me", "prefab") };
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select Model File", "", extensions, false);
+        if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
+            LoadVRM(paths[0]);
+
+        isLoading = false;
     }
 
     public async void LoadVRM(string path)
     {
-        // Preserve the original importer, but reject every model except Carlotta.
-        if (!string.Equals(Path.GetFileName(path ?? string.Empty), ZoyaCarlottaFileName, StringComparison.OrdinalIgnoreCase))
-        {
-            Debug.LogWarning("[ZOYA] Rejected non-Carlotta model load: " + path);
-            return;
-        }
-
         if (path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
         {
             LoadAssetBundleModel(path);
