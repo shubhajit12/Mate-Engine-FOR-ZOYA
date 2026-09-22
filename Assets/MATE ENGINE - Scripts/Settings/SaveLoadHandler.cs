@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -140,8 +140,6 @@ public class SaveLoadHandler : MonoBehaviour
 
         public float uiHueShift = 0.07f;
         public float uiSaturation = 1.0f;
-
-        public bool enableDiscordRPC = true;
 
         public bool tutorialDone = true;
 
