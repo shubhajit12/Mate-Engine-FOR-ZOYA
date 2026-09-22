@@ -32,11 +32,6 @@ public class VRMLoader : MonoBehaviour
 
     void Start()
     {
-        // ZOYA ships with Carlotta as the only user-facing model. Keep the original loader intact,
-        // but hide the custom model import control so users cannot replace the model.
-        if (loadVRMButton != null)
-            loadVRMButton.gameObject.SetActive(false);
-
         string savedPath = SaveLoadHandler.Instance != null
             ? SaveLoadHandler.Instance.data.selectedModelPath
             : null;
