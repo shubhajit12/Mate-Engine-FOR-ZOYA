@@ -77,6 +77,16 @@ public class AvatarLibraryMenu : MonoBehaviour
         RefreshUI();
     }
 
+    /// <summary>
+    /// ZOYA does not expose Mate's selectable avatar library.
+    /// Kept as a compatibility hook for existing scene references.
+    /// </summary>
+    public void HideForZoya()
+    {
+        if (libraryPanel != null)
+            libraryPanel.SetActive(false);
+    }
+
     public void OpenLibrary()
     {
         libraryPanel.SetActive(true);
