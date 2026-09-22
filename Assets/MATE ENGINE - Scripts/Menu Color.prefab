@@ -45,45 +45,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e5c54347ac4e74697992b8879ea120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundPanelColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
+  backgroundPanelColor: {r: 0.07058824, g: 0.078431375, b: 0.105882354, a: 1}
   menuPanel: {fileID: 0}
-  titleTextColor: {r: 0.8980392, g: 0.84313726, b: 1, a: 1}
+  titleTextColor: {r: 0.96, g: 0.97, b: 0.98, a: 1}
   titleTextObject: {fileID: 0}
-  sliderNormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-  sliderHighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
-  sliderPressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
-  sliderSelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-  sliderDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
-  sliderLabelColor: {r: 0.92941177, g: 0.69411767, b: 1, a: 1}
-  sliderBackgroundColor: {r: 0.6, g: 0.49411765, b: 0.77254903, a: 1}
-  sliderFillColor: {r: 0.81960785, g: 0.69411767, b: 1, a: 1}
-  toggleNormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-  toggleHighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
-  togglePressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
-  toggleSelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-  toggleDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
-  toggleLabelColor: {r: 0.92941177, g: 0.69411767, b: 1, a: 1}
+  sliderNormalColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  sliderHighlightedColor: {r: 1, g: 0.6039216, b: 0.2901961, a: 1}
+  sliderPressedColor: {r: 0.8509804, g: 0.39607844, b: 0.09411765, a: 1}
+  sliderSelectedColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  sliderDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 0.5}
+  sliderLabelColor: {r: 1, g: 0.6901961, b: 0.4, a: 1}
+  sliderBackgroundColor: {r: 0.20392157, g: 0.21960784, b: 0.27450982, a: 1}
+  sliderFillColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  toggleNormalColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  toggleHighlightedColor: {r: 1, g: 0.6039216, b: 0.2901961, a: 1}
+  togglePressedColor: {r: 0.8509804, g: 0.39607844, b: 0.09411765, a: 1}
+  toggleSelectedColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  toggleDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 0.5}
+  toggleLabelColor: {r: 1, g: 0.6901961, b: 0.4, a: 1}
   toggleBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
-  buttonNormalColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
-  buttonHighlightedColor: {r: 0.22352941, g: 0.18431373, b: 0.29411766, a: 1}
-  buttonPressedColor: {r: 0.4745098, g: 0.39607844, b: 0.62352943, a: 1}
-  buttonSelectedColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
-  buttonDisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-  buttonTextColor: {r: 0.8980392, g: 0.84313726, b: 1, a: 1}
-  scrollbarNormalColor: {r: 1, g: 0, b: 1, a: 1}
-  scrollbarHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
-  scrollbarPressedColor: {r: 1, g: 1, b: 1, a: 1}
-  scrollbarSelectedColor: {r: 1, g: 1, b: 1, a: 1}
-  scrollbarDisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  scrollbarHandleColor: {r: 0.8, g: 0.6, b: 1, a: 1}
-  scrollbarBackgroundColor: {r: 0.3, g: 0.2, b: 0.4, a: 1}
-  dropdownNormalColor: {r: 1, g: 0, b: 1, a: 1}
-  dropdownHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
-  dropdownPressedColor: {r: 1, g: 1, b: 1, a: 1}
-  dropdownSelectedColor: {r: 1, g: 1, b: 1, a: 1}
-  dropdownDisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  dropdownBackgroundColor: {r: 0.3, g: 0.2, b: 0.4, a: 1}
-  dropdownTextColor: {r: 1, g: 1, b: 1, a: 1}
+  buttonNormalColor: {r: 0.1254902, g: 0.13725491, b: 0.1764706, a: 1}
+  buttonHighlightedColor: {r: 0.16862746, g: 0.18431373, b: 0.23137255, a: 1}
+  buttonPressedColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  buttonSelectedColor: {r: 0.1254902, g: 0.13725491, b: 0.1764706, a: 1}
+  buttonDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 0.5}
+  buttonTextColor: {r: 0.96, g: 0.97, b: 0.98, a: 1}
+  scrollbarNormalColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  scrollbarHighlightedColor: {r: 1, g: 0.6039216, b: 0.2901961, a: 1}
+  scrollbarPressedColor: {r: 0.8509804, g: 0.39607844, b: 0.09411765, a: 1}
+  scrollbarSelectedColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  scrollbarDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 1}
+  scrollbarHandleColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  scrollbarBackgroundColor: {r: 0.07058824, g: 0.078431375, b: 0.105882354, a: 1}
+  dropdownNormalColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  dropdownHighlightedColor: {r: 1, g: 0.6039216, b: 0.2901961, a: 1}
+  dropdownPressedColor: {r: 0.8509804, g: 0.39607844, b: 0.09411765, a: 1}
+  dropdownSelectedColor: {r: 0.9490196, g: 0.49019608, b: 0.14901961, a: 1}
+  dropdownDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 1}
+  dropdownBackgroundColor: {r: 0.07058824, g: 0.078431375, b: 0.105882354, a: 1}
+  dropdownTextColor: {r: 0.96, g: 0.97, b: 0.98, a: 1}
 --- !u!1 &7689312660969449461
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   sliderHighlightedColor: {r: 0.11764707, g: 0.16078432, b: 0.21960786, a: 1}
   sliderPressedColor: {r: 0.20469919, g: 0.27774733, b: 0.3773585, a: 1}
   sliderSelectedColor: {r: 0.31367925, g: 0.39413598, b: 0.5, a: 1}
-  sliderDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  sliderDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 0.5}
   sliderLabelColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   sliderBackgroundColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
   sliderFillColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
@@ -144,26 +144,26 @@ MonoBehaviour:
   toggleHighlightedColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
   togglePressedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
   toggleSelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
-  toggleDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  toggleDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 0.5}
   toggleLabelColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   toggleBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
   buttonNormalColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
   buttonHighlightedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
   buttonPressedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
   buttonSelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
-  buttonDisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+  buttonDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 0.5}
   buttonTextColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   scrollbarNormalColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   scrollbarHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
   scrollbarPressedColor: {r: 1, g: 1, b: 1, a: 1}
   scrollbarSelectedColor: {r: 1, g: 1, b: 1, a: 1}
-  scrollbarDisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  scrollbarDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 1}
   scrollbarHandleColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   scrollbarBackgroundColor: {r: 0.3, g: 0.2, b: 0.4, a: 1}
   dropdownNormalColor: {r: 1, g: 1, b: 1, a: 1}
   dropdownHighlightedColor: {r: 1, g: 1, b: 1, a: 1}
   dropdownPressedColor: {r: 1, g: 1, b: 1, a: 1}
   dropdownSelectedColor: {r: 1, g: 1, b: 1, a: 1}
-  dropdownDisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  dropdownDisabledColor: {r: 0.35, g: 0.37, b: 0.42, a: 1}
   dropdownBackgroundColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
   dropdownTextColor: {r: 1, g: 1, b: 1, a: 1}
