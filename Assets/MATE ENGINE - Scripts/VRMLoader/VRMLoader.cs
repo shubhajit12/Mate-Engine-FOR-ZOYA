@@ -32,6 +32,9 @@ public class VRMLoader : MonoBehaviour
 
     void Start()
     {
+        // ZOYA uses Carlotta.vrm exclusively; hide the legacy model-selection controls.
+        HideZoyaModelSelectionUI();
+
         string savedPath = SaveLoadHandler.Instance != null
             ? SaveLoadHandler.Instance.data.selectedModelPath
             : null;
@@ -55,6 +58,15 @@ public class VRMLoader : MonoBehaviour
         if (!string.IsNullOrEmpty(savedPath))
             LoadVRM(savedPath);
     }
+    private void HideZoyaModelSelectionUI()
+    {
+        var modelButton = GameObject.Find("Models");
+        if (modelButton != null) modelButton.SetActive(false);
+
+        var customModelButton = GameObject.Find("LoadModel");
+        if (customModelButton != null) customModelButton.SetActive(false);
+    }
+
     private void TryLoadRandomAvatar()
     {
         var options = new System.Collections.Generic.List<string>();
