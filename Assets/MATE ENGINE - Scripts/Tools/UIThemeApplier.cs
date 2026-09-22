@@ -1,257 +1,108 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class UIThemeApplier : MonoBehaviour
 {
-    [Header("========== BACKGROUND ==========")]
-    public Color backgroundPanelColor = new Color(0.2f, 0.1f, 0.3f, 1f);
-    public GameObject menuPanel; // Panel containing all UI elements
+    // ZOYA dark + amber palette (#F27D26).
+    private static readonly Color Panel = new Color(0.035f, 0.020f, 0.012f, 0.98f);
+    private static readonly Color PanelAlt = new Color(0.075f, 0.035f, 0.015f, 0.96f);
+    private static readonly Color Accent = new Color(0.949f, 0.490f, 0.149f, 1f);
+    private static readonly Color AccentHover = new Color(1f, 0.690f, 0.420f, 1f);
+    private static readonly Color AccentPressed = new Color(0.898f, 0.290f, 0.047f, 1f);
+    private static readonly Color Text = new Color(0.98f, 0.98f, 1f, 1f);
+    private static readonly Color MutedText = new Color(0.72f, 0.70f, 0.68f, 1f);
+    private static readonly Color Disabled = new Color(0.35f, 0.35f, 0.36f, 0.55f);
+    private static readonly Color Track = new Color(0.12f, 0.060f, 0.025f, 1f);
 
-    [Header("========== TITLE TEXT ==========")]
-    public Color titleTextColor = Color.white;
-    public GameObject titleTextObject; // TextMeshProUGUI for title
+    public GameObject menuPanel;
+    public GameObject titleTextObject;
+    private static bool bootstrapped;
 
-    [Header("========== SLIDER COLORS ==========")]
-    public Color sliderNormalColor = Color.magenta;
-    public Color sliderHighlightedColor = Color.white;
-    public Color sliderPressedColor = Color.white;
-    public Color sliderSelectedColor = Color.white;
-    public Color sliderDisabledColor = Color.gray;
-    public Color sliderLabelColor = Color.white;
-    public Color sliderBackgroundColor = new Color(0.3f, 0.2f, 0.4f, 1f);
-    public Color sliderFillColor = new Color(1f, 0.5f, 1f, 1f);
-
-    [Header("========== TOGGLE COLORS ==========")]
-    public Color toggleNormalColor = Color.magenta;
-    public Color toggleHighlightedColor = Color.white;
-    public Color togglePressedColor = Color.white;
-    public Color toggleSelectedColor = Color.white;
-    public Color toggleDisabledColor = Color.gray;
-    public Color toggleLabelColor = Color.white;
-    public Color toggleBackgroundColor = new Color(0.3f, 0.2f, 0.4f, 1f);
-
-    [Header("========== BUTTON COLORS ==========")]
-    public Color buttonNormalColor = Color.magenta;
-    public Color buttonHighlightedColor = Color.white;
-    public Color buttonPressedColor = Color.white;
-    public Color buttonSelectedColor = Color.white;
-    public Color buttonDisabledColor = Color.gray;
-    public Color buttonTextColor = Color.white;
-
-    [Header("========== SCROLLBAR COLORS ==========")]
-    public Color scrollbarNormalColor = Color.magenta;
-    public Color scrollbarHighlightedColor = Color.white;
-    public Color scrollbarPressedColor = Color.white;
-    public Color scrollbarSelectedColor = Color.white;
-    public Color scrollbarDisabledColor = Color.gray;
-    public Color scrollbarHandleColor = new Color(0.8f, 0.6f, 1f, 1f);
-    public Color scrollbarBackgroundColor = new Color(0.3f, 0.2f, 0.4f, 1f);
-
-    [Header("========== DROPDOWN COLORS ==========")]
-    public Color dropdownNormalColor = Color.magenta;
-    public Color dropdownHighlightedColor = Color.white;
-    public Color dropdownPressedColor = Color.white;
-    public Color dropdownSelectedColor = Color.white;
-    public Color dropdownDisabledColor = Color.gray;
-    public Color dropdownBackgroundColor = new Color(0.3f, 0.2f, 0.4f, 1f);
-    public Color dropdownTextColor = Color.white;
-
-
-
-
-    void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void Bootstrap()
     {
-        ApplyZoyaPalette();
-        ApplyTheme();
+        if (bootstrapped) return;
+        bootstrapped = true;
+        var go = new GameObject("ZOYA UI Theme");
+        DontDestroyOnLoad(go);
+        go.AddComponent<UIThemeApplier>();
     }
 
-    void ApplyZoyaPalette()
+    void Awake() => ApplyAllRuntimeUI();
+
+    void OnEnable() => Invoke(nameof(ApplyAllRuntimeUI), 0.15f);
+
+    void ApplyAllRuntimeUI()
     {
-        // ZOYA brand palette: warm orange/amber UI on a dark background.
-        backgroundPanelColor = new Color(0.035f, 0.020f, 0.012f, 1f);
-        titleTextColor = Color.white;
-
-        sliderNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
-        sliderHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
-        sliderPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
-        sliderSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
-        sliderDisabledColor = Color.gray;
-        sliderLabelColor = Color.white;
-        sliderBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
-        sliderFillColor = new Color(0.949f, 0.490f, 0.149f, 1f);
-
-        toggleNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
-        toggleHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
-        togglePressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
-        toggleSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
-        toggleDisabledColor = Color.gray;
-        toggleLabelColor = Color.white;
-        toggleBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
-
-        buttonNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
-        buttonHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
-        buttonPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
-        buttonSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
-        buttonDisabledColor = Color.gray;
-        buttonTextColor = Color.white;
-
-        scrollbarNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
-        scrollbarHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
-        scrollbarPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
-        scrollbarSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
-        scrollbarDisabledColor = Color.gray;
-        scrollbarHandleColor = new Color(1f, 0.541f, 0.239f, 1f);
-        scrollbarBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
-
-        dropdownNormalColor = new Color(0.949f, 0.490f, 0.149f, 1f);
-        dropdownHighlightedColor = new Color(1f, 0.690f, 0.420f, 1f);
-        dropdownPressedColor = new Color(0.898f, 0.290f, 0.047f, 1f);
-        dropdownSelectedColor = new Color(1f, 0.541f, 0.239f, 1f);
-        dropdownDisabledColor = Color.gray;
-        dropdownBackgroundColor = new Color(0.12f, 0.060f, 0.025f, 1f);
-        dropdownTextColor = Color.white;
+        ApplyLegacyTarget();
+        foreach (Canvas canvas in FindObjectsOfType<Canvas>(true))
+            if (canvas != null) StyleHierarchy(canvas.gameObject);
     }
 
-    [ContextMenu("Apply Theme Colors")]
-    public void ApplyTheme()
+    void ApplyLegacyTarget()
     {
-        if (menuPanel == null)
-        {
-            Debug.LogError("Menu Panel is not assigned.");
-            return;
-        }
-
-        // Background Panel
-        Image panelImage = menuPanel.GetComponent<Image>();
-        if (panelImage != null)
-            panelImage.color = backgroundPanelColor;
-
-        // Title Text
+        if (menuPanel == null) return;
+        StyleHierarchy(menuPanel);
         if (titleTextObject != null)
         {
-            TextMeshProUGUI titleTMP = titleTextObject.GetComponent<TextMeshProUGUI>();
-            if (titleTMP != null)
-                titleTMP.color = titleTextColor;
+            var title = titleTextObject.GetComponent<TextMeshProUGUI>();
+            if (title != null) title.color = Text;
         }
-
-        // Sliders
-        foreach (Slider slider in menuPanel.GetComponentsInChildren<Slider>(true))
-        {
-            var colors = slider.colors;
-            colors.normalColor = sliderNormalColor;
-            colors.highlightedColor = sliderHighlightedColor;
-            colors.pressedColor = sliderPressedColor;
-            colors.selectedColor = sliderSelectedColor;
-            colors.disabledColor = sliderDisabledColor;
-            slider.colors = colors;
-
-            // Slider Label (Text)
-            TextMeshProUGUI label = slider.GetComponentInChildren<TextMeshProUGUI>();
-            if (label != null)
-                label.color = sliderLabelColor;
-
-            // Background
-            var bgImage = slider.transform.Find("Background")?.GetComponent<Image>();
-            if (bgImage != null)
-                bgImage.color = sliderBackgroundColor;
-
-            // Fill
-            var fillImage = slider.transform.Find("Fill Area/Fill")?.GetComponent<Image>();
-            if (fillImage != null)
-                fillImage.color = sliderFillColor;
-        }
-
-        // Toggles
-        foreach (Toggle toggle in menuPanel.GetComponentsInChildren<Toggle>(true))
-        {
-            var colors = toggle.colors;
-            colors.normalColor = toggleNormalColor;
-            colors.highlightedColor = toggleHighlightedColor;
-            colors.pressedColor = togglePressedColor;
-            colors.selectedColor = toggleSelectedColor;
-            colors.disabledColor = toggleDisabledColor;
-            toggle.colors = colors;
-
-            // Label
-            TextMeshProUGUI label = toggle.GetComponentInChildren<TextMeshProUGUI>();
-            if (label != null)
-                label.color = toggleLabelColor;
-
-            // Background
-            var bgImage = toggle.GetComponentInChildren<Image>();
-            if (bgImage != null)
-                bgImage.color = toggleBackgroundColor;
-        }
-
-        // Buttons
-        foreach (Button button in menuPanel.GetComponentsInChildren<Button>(true))
-        {
-            var colors = button.colors;
-            colors.normalColor = buttonNormalColor;
-            colors.highlightedColor = buttonHighlightedColor;
-            colors.pressedColor = buttonPressedColor;
-            colors.selectedColor = buttonSelectedColor;
-            colors.disabledColor = buttonDisabledColor;
-            button.colors = colors;
-
-            // Text
-            TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (text != null)
-                text.color = buttonTextColor;
-        }
-
-        // Scrollbars
-        foreach (Scrollbar scrollbar in menuPanel.GetComponentsInChildren<Scrollbar>(true))
-        {
-            var colors = scrollbar.colors;
-            colors.normalColor = scrollbarNormalColor;
-            colors.highlightedColor = scrollbarHighlightedColor;
-            colors.pressedColor = scrollbarPressedColor;
-            colors.selectedColor = scrollbarSelectedColor;
-            colors.disabledColor = scrollbarDisabledColor;
-            scrollbar.colors = colors;
-
-            // Handle
-            var handle = scrollbar.transform.Find("Sliding Area/Handle")?.GetComponent<Image>();
-            if (handle != null)
-                handle.color = scrollbarHandleColor;
-
-            // Background
-            var background = scrollbar.GetComponent<Image>();
-            if (background != null)
-                background.color = scrollbarBackgroundColor;
-        }
-
-        // TMP Dropdowns
-        foreach (TMP_Dropdown dropdown in menuPanel.GetComponentsInChildren<TMP_Dropdown>(true))
-        {
-            var colors = dropdown.colors;
-            colors.normalColor = dropdownNormalColor;
-            colors.highlightedColor = dropdownHighlightedColor;
-            colors.pressedColor = dropdownPressedColor;
-            colors.selectedColor = dropdownSelectedColor;
-            colors.disabledColor = dropdownDisabledColor;
-            dropdown.colors = colors;
-
-            // Label text
-            var label = dropdown.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
-            if (label != null)
-                label.color = dropdownTextColor;
-
-            // Background
-            var background = dropdown.GetComponent<Image>();
-            if (background != null)
-                background.color = dropdownBackgroundColor;
-
-            // Arrow (optional)
-            var arrow = dropdown.transform.Find("Arrow")?.GetComponent<Image>();
-            if (arrow != null)
-                arrow.color = dropdownTextColor;
-        }
-
-
-
-        Debug.Log("✔ All UI theme colors applied!");
     }
+
+    void StyleHierarchy(GameObject root)
+    {
+        if (root == null) return;
+
+        foreach (Image image in root.GetComponentsInChildren<Image>(true))
+        {
+            if (image == null) continue;
+            string n = image.gameObject.name.ToLowerInvariant();
+            // Keep avatar thumbnails/icons/artwork intact; recolour structural UI.
+            if (n.Contains("background") || n.Contains("panel") || n.Contains("window") ||
+                n.Contains("container") || n.Contains("content") || n.Contains("header"))
+                image.color = n.Contains("content") ? PanelAlt : Panel;
+        }
+
+        foreach (Selectable selectable in root.GetComponentsInChildren<Selectable>(true))
+        {
+            if (selectable == null) continue;
+            var colors = selectable.colors;
+            colors.normalColor = selectable is Button ? PanelAlt : Accent;
+            colors.highlightedColor = AccentHover;
+            colors.pressedColor = AccentPressed;
+            colors.selectedColor = Accent;
+            colors.disabledColor = Disabled;
+            colors.colorMultiplier = 1f;
+            selectable.colors = colors;
+
+            if (selectable is Slider slider)
+            {
+                var bg = slider.transform.Find("Background")?.GetComponent<Image>();
+                if (bg != null) bg.color = Track;
+                var fill = slider.transform.Find("Fill Area/Fill")?.GetComponent<Image>();
+                if (fill != null) fill.color = Accent;
+            }
+
+            if (selectable is TMP_Dropdown dropdown)
+            {
+                var bg = dropdown.GetComponent<Image>();
+                if (bg != null) bg.color = PanelAlt;
+                var arrow = dropdown.transform.Find("Arrow")?.GetComponent<Image>();
+                if (arrow != null) arrow.color = Accent;
+            }
+        }
+
+        foreach (TextMeshProUGUI text in root.GetComponentsInChildren<TextMeshProUGUI>(true))
+        {
+            if (text == null) continue;
+            string n = text.gameObject.name.ToLowerInvariant();
+            text.color = (n.Contains("description") || n.Contains("subtitle") || n.Contains("hint"))
+                ? MutedText : Text;
+        }
+    }
+
+    [ContextMenu("Apply ZOYA Theme")]
+    public void ApplyTheme() => ApplyAllRuntimeUI();
 }
