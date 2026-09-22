@@ -57,55 +57,6 @@ public class SettingsHandlerButtons : MonoBehaviour
     }
 
 
-    private void HideZoyaExcludedFeatures()
-    {
-        // ZOYA owns the AI/chat system and does not use Mate's standalone chat,
-        // Minecraft integration, Discord/community promotion, or Steam DLC UI.
-        string[] hiddenObjectNames =
-        {
-            "Chat", "ChatBot", "ChatBot AI", "ChatMenuPanel", "AI INPUT",
-            "MinecraftPanel", "Minecraft Messages", "= MINECRAFT",
-            "Discord", "Discord RPC", "= STEAM DLC", "STEAM_DLC", "STEAM DLCS"
-        };
-
-        foreach (var go in FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-        {
-            if (go == null) continue;
-            string name = go.name?.Trim() ?? string.Empty;
-
-            foreach (var hiddenName in hiddenObjectNames)
-            {
-                if (string.Equals(name, hiddenName, System.StringComparison.OrdinalIgnoreCase))
-                {
-                    go.SetActive(false);
-                    break;
-                }
-            }
-        }
-
-        string[] hiddenLabels =
-        {
-            "MINECRAFT INTEGRATION", "MINECRAFT MESSAGES", "AI SETTINGS",
-            "AI SYSTEM PROMPT", "DEL. CHAT HISTORY", "DISCORD RICH PRESENCE",
-            "STEAM DLCs", "STEAM DLCS"
-        };
-
-        foreach (var label in hiddenLabels)
-        {
-            foreach (var text in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-            {
-                if (text == null || !string.Equals(text.text?.Trim(), label, System.StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                Transform target = text.transform;
-                for (int depth = 0; depth < 2 && target.parent != null; depth++)
-                    target = target.parent;
-
-                target.gameObject.SetActive(false);
-            }
-        }
-    }
-
     private void OnApplyClicked()
     {
         togglesHandler?.ApplySettings();
