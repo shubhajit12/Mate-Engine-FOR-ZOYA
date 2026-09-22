@@ -44,7 +44,6 @@ public class SettingsHandlerButtons : MonoBehaviour
     private void Start()
     {
         HideModelManagementButtons();
-        HideZoyaExcludedFeatures();
         if (applyButton != null) applyButton.onClick.AddListener(OnApplyClicked);
         if (resetButton != null) resetButton.onClick.AddListener(OnResetClicked);
         if (windowSizeButton != null) windowSizeButton.onClick.AddListener(CycleWindowSize);
