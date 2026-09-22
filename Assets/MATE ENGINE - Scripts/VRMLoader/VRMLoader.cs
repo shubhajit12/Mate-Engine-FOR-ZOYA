@@ -1,21 +1,25 @@
-﻿using System.IO;
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using VRM;
 using UniGLTF;
-using SFB;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UniVRM10;
-using System;
-using Newtonsoft.Json;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
+/// <summary>
+/// ZOYA companion model loader.
+/// The desktop companion is intentionally locked to Carlotta.vrm.
+/// The original Mate custom-avatar/model-import surface is retained only for
+/// scene compatibility; all non-Carlotta model loading is rejected.
+/// </summary>
 public class VRMLoader : MonoBehaviour
 {
     public Button loadVRMButton;
@@ -25,137 +29,71 @@ public class VRMLoader : MonoBehaviour
     public GameObject componentTemplatePrefab;
 
     private GameObject currentModel;
-    private bool isLoading = false;
-    private const string LegacyModelPathKey = "SavedPathModel";
     private RuntimeGltfInstance currentGltf;
     private AssetBundle currentBundle;
+    private bool isLoading;
 
-    void Start()
+    private const string CarlottaFileName = "Carlotta.vrm";
+
+    private void Start()
     {
-        string savedPath = SaveLoadHandler.Instance != null
-            ? SaveLoadHandler.Instance.data.selectedModelPath
-            : null;
+        HideLegacyModelUi();
 
-        if (string.IsNullOrEmpty(savedPath) && PlayerPrefs.HasKey(LegacyModelPathKey))
-        {
-            savedPath = PlayerPrefs.GetString(LegacyModelPathKey);
-            if (SaveLoadHandler.Instance != null)
-            {
-                SaveLoadHandler.Instance.data.selectedModelPath = savedPath;
-                SaveLoadHandler.Instance.SaveToDisk();
-            }
-            PlayerPrefs.DeleteKey(LegacyModelPathKey);
-            PlayerPrefs.Save();
-        }
-        if (SaveLoadHandler.Instance != null && SaveLoadHandler.Instance.data.enableRandomAvatar)
-        {
-            TryLoadRandomAvatar();
-            return;
-        }
-        if (!string.IsNullOrEmpty(savedPath))
-            LoadVRM(savedPath);
-    }
-    private void TryLoadRandomAvatar()
-    {
-        var options = new System.Collections.Generic.List<string>();
-        if (mainModel != null) options.Add("__DEFAULT__");
+        // Never expose or activate the original built-in Mate avatar.
+        if (mainModel != null)
+            mainModel.SetActive(false);
 
-        var lib = FindFirstObjectByType<AvatarLibraryMenu>();
-        if (lib != null && lib.dlcAvatars != null)
+        string carlottaPath = FindCarlottaPath();
+        if (!string.IsNullOrEmpty(carlottaPath))
         {
-            for (int i = 0; i < lib.dlcAvatars.Count; i++)
-            {
-                var p = lib.dlcAvatars[i]?.prefab;
-                if (p != null) options.Add(p.name);
-            }
+            LoadVRM(carlottaPath);
         }
-
-        try
+        else
         {
-            string avatarsPath = System.IO.Path.Combine(Application.persistentDataPath, "avatars.json");
-            if (System.IO.File.Exists(avatarsPath))
-            {
-                var entries = JsonConvert.DeserializeObject<System.Collections.Generic.List<AvatarLibraryMenu.AvatarEntry>>(System.IO.File.ReadAllText(avatarsPath));
-                if (entries != null)
-                {
-                    for (int i = 0; i < entries.Count; i++)
-                    {
-                        var fp = entries[i].filePath;
-                        if (!string.IsNullOrEmpty(fp)) options.Add(fp);
-                    }
-                }
-            }
+            Debug.LogError("[ZOYA] Carlotta.vrm was not found. The companion will remain without a model.");
         }
-        catch { }
-
-        if (options.Count == 0)
-        {
-            ActivateDefaultModel();
-            return;
-        }
-
-        int idx = UnityEngine.Random.Range(0, options.Count);
-        string pick = options[idx];
-        if (pick == "__DEFAULT__") ActivateDefaultModel();
-        else LoadVRM(pick);
     }
 
-
+    /// <summary>
+    /// Kept for scene compatibility. Custom model importing is disabled.
+    /// </summary>
     public void OpenFileDialogAndLoadVRM()
     {
-        if (isLoading) return;
-
-        isLoading = true;
-        var extensions = new[] { new ExtensionFilter("Model Files", "vrm", "me", "prefab") };
-        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select Model File", "", extensions, false);
-        if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
-            LoadVRM(paths[0]);
-
-        isLoading = false;
+        HideLegacyModelUi();
+        Debug.Log("[ZOYA] Custom VRM/model importing is disabled. Only Carlotta.vrm is supported.");
     }
 
+    /// <summary>
+    /// Loads Carlotta only. Any other path is rejected.
+    /// </summary>
     public async void LoadVRM(string path)
     {
-        if (path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
+        if (isLoading)
+            return;
+
+        if (!IsCarlottaPath(path))
         {
-            LoadAssetBundleModel(path);
-            if (SaveLoadHandler.Instance != null)
-            {
-                SaveLoadHandler.Instance.data.selectedModelPath = path;
-                SaveLoadHandler.Instance.SaveToDisk();
-            }
+            Debug.LogWarning("[ZOYA] Rejected non-Carlotta model load: " + path);
             return;
         }
 
-        if (IsDLCReference(path))
+        if (!File.Exists(path))
         {
-            GameObject prefab = FindDLCByName(path);
-            if (prefab != null)
-            {
-                GameObject instance = Instantiate(prefab);
-                FinalizeLoadedModel(instance, path);
-                if (SaveLoadHandler.Instance != null)
-                {
-                    SaveLoadHandler.Instance.data.selectedModelPath = path;
-                    SaveLoadHandler.Instance.SaveToDisk();
-                }
-            }
-            else
-            {
-                Debug.LogError("[VRMLoader] DLC Prefab not found: " + path);
-            }
+            Debug.LogError("[ZOYA] Carlotta.vrm does not exist: " + path);
             return;
         }
 
-        if (!File.Exists(path)) return;
+        isLoading = true;
 
         try
         {
             byte[] fileData = await Task.Run(() => File.ReadAllBytes(path));
-            if (fileData == null || fileData.Length == 0) return;
+            if (fileData == null || fileData.Length == 0)
+                throw new InvalidDataException("Carlotta.vrm is empty.");
 
             GameObject loadedModel = null;
 
+            // Try VRM 1.x first.
             try
             {
                 var glbData = new GlbFileParser(path).Parse();
@@ -170,81 +108,56 @@ public class VRMLoader : MonoBehaviour
                         currentGltf = instance10;
                         loadedModel.AddComponent<GltfInstanceDisposer>().Bind(instance10);
                     }
-
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("[ZOYA] VRM 1.x import failed; trying VRM 0.x: " + ex.Message);
+            }
 
+            // Carlotta is currently a VRM 0.x asset, so retain the legacy importer.
             if (loadedModel == null)
             {
+                using var gltfData = new GlbBinaryParser(fileData, path).Parse();
+                VRMImporterContext importer = null;
                 try
                 {
-                    using var gltfData = new GlbBinaryParser(fileData, path).Parse();
-                    VRMImporterContext importer = null;
-                    try
+                    importer = new VRMImporterContext(new VRMData(gltfData));
+                    var instance = await importer.LoadAsync(new ImmediateCaller());
+                    if (instance.Root != null)
                     {
-                        importer = new VRMImporterContext(new VRMData(gltfData));
-                        var instance = await importer.LoadAsync(new ImmediateCaller());
-                        if (instance.Root != null)
-                        {
-                            loadedModel = instance.Root;
-                            currentGltf = instance;
-                            loadedModel.AddComponent<GltfInstanceDisposer>().Bind(instance);
-                        }
-
-                    }
-                    finally
-                    {
-                        importer?.Dispose();
+                        loadedModel = instance.Root;
+                        currentGltf = instance;
+                        loadedModel.AddComponent<GltfInstanceDisposer>().Bind(instance);
                     }
                 }
-                catch { return; }
+                finally
+                {
+                    importer?.Dispose();
+                }
             }
 
-            if (loadedModel == null) return;
+            if (loadedModel == null)
+                throw new InvalidOperationException("Carlotta.vrm could not be imported.");
 
-            FinalizeLoadedModel(loadedModel, path);
-            if (SaveLoadHandler.Instance != null)
-            {
-                SaveLoadHandler.Instance.data.selectedModelPath = path;
-                SaveLoadHandler.Instance.SaveToDisk();
-            }
+            FinalizeLoadedModel(loadedModel);
         }
         catch (Exception ex)
         {
-            Debug.LogError("[VRMLoader] Failed to load model: " + ex.Message);
+            Debug.LogError("[ZOYA] Failed to load Carlotta.vrm: " + ex);
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 
-    private void LoadAssetBundleModel(string path)
-    {
-        var bundle = AssetBundle.LoadFromFile(path);
-        if (bundle == null)
-        {
-            Debug.LogError("[VRMLoader] Failed to load AssetBundle at: " + path);
-            return;
-        }
-
-        var prefab = bundle.LoadAllAssets<GameObject>().FirstOrDefault();
-        if (prefab == null)
-        {
-            Debug.LogError("[VRMLoader] No prefab found in AssetBundle.");
-            bundle.Unload(true);
-            return;
-        }
-
-        var instance = Instantiate(prefab);
-        FinalizeLoadedModel(instance, path, bundle);
-    }
-
-    private void FinalizeLoadedModel(GameObject loadedModel, string path, AssetBundle bundle = null)
+    private void FinalizeLoadedModel(GameObject loadedModel)
     {
         DisableMainModel();
         ClearPreviousCustomModel();
 
-        currentBundle = bundle;
-
-        loadedModel.transform.SetParent(customModelOutput.transform, false);
+        loadedModel.transform.SetParent(customModelOutput != null ? customModelOutput.transform : transform, false);
         loadedModel.transform.localPosition = Vector3.zero;
         loadedModel.transform.localRotation = Quaternion.identity;
         loadedModel.transform.localScale = Vector3.one;
@@ -254,95 +167,122 @@ public class VRMLoader : MonoBehaviour
         AssignAnimatorController(currentModel);
         InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
 
-        var changer = FindFirstObjectByType<MEValueChanger>();
-        if (changer != null)
-            changer.SendMessage("TryAttachCustomVRM", SendMessageOptions.DontRequireReceiver);
-
-        string displayName = Path.GetFileNameWithoutExtension(path);
-        string author = "Unknown";
-        string version = "Unknown";
-        string fileType = "Unknown";
-        Texture2D thumbnail = null;
-        bool isME = path.EndsWith(".me", StringComparison.OrdinalIgnoreCase);
-
-        var vrm10Instance = loadedModel.GetComponent<UniVRM10.Vrm10Instance>();
-        if (vrm10Instance != null && vrm10Instance.Vrm != null && vrm10Instance.Vrm.Meta != null)
-        {
-            displayName = vrm10Instance.Vrm.Meta.Name ?? displayName;
-            author = (vrm10Instance.Vrm.Meta.Authors != null && vrm10Instance.Vrm.Meta.Authors.Count > 0) ? vrm10Instance.Vrm.Meta.Authors[0] : "Unknown";
-            version = vrm10Instance.Vrm.Meta.Version ?? "Unknown";
-            fileType = isME ? ".ME (VRM1.X)" : "VRM1.X";
-            thumbnail = vrm10Instance.Vrm.Meta.Thumbnail;
-        }
-        else
-        {
-            var vrmMeta = loadedModel.GetComponent<VRM.VRMMeta>();
-            if (vrmMeta != null && vrmMeta.Meta != null)
-            {
-                var meta = vrmMeta.Meta;
-                displayName = !string.IsNullOrEmpty(meta.Title) ? meta.Title : displayName;
-                author = !string.IsNullOrEmpty(meta.Author) ? meta.Author : "Unknown";
-                version = !string.IsNullOrEmpty(meta.Version) ? meta.Version : "Unknown";
-                fileType = isME ? ".ME (VRM0.X)" : "VRM0.X";
-                thumbnail = meta.Thumbnail;
-            }
-        }
-
-        Texture2D safeThumbnail = MakeReadableCopy(thumbnail);
-        int polyCount = GetTotalPolygons(loadedModel);
-
-        if (!IsDLCReference(path))
-            AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, safeThumbnail, polyCount);
-
-        if (safeThumbnail != null) Destroy(safeThumbnail);
-
-        var libraryMenu = FindFirstObjectByType<AvatarLibraryMenu>();
-        if (libraryMenu != null)
-            libraryMenu.ReloadAvatars();
-
-        StartCoroutine(DelayedRefreshStats());
-
         if (MEModLoader.Instance != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(loadedModel);
 
+        StartCoroutine(DelayedRefreshStats());
         StartCoroutine(ReleaseRamAndUnloadAssetsCo());
-        SettingsHandlerUtility.ReloadAllSettingsHandlers();
-    }
 
-    public Texture2D MakeReadableCopy(Texture texture)
-    {
-        if (texture == null) return null;
-        RenderTexture rt = RenderTexture.GetTemporary(texture.width, texture.height, 0);
-        Graphics.Blit(texture, rt);
-        RenderTexture previous = RenderTexture.active;
-        RenderTexture.active = rt;
-        Texture2D readable = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
-        readable.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-        readable.Apply();
-        RenderTexture.active = previous;
-        RenderTexture.ReleaseTemporary(rt);
-        return readable;
+        if (SaveLoadHandler.Instance != null)
+        {
+            SaveLoadHandler.Instance.data.selectedModelPath = GetCarlottaPathForSave();
+            SaveLoadHandler.Instance.data.enableRandomAvatar = false;
+            SaveLoadHandler.Instance.SaveToDisk();
+        }
+
+        SettingsHandlerUtility.ReloadAllSettingsHandlers();
+        Debug.Log("[ZOYA] Carlotta.vrm loaded. Custom avatar/model loading is locked.");
     }
 
     public void ResetModel()
     {
-        string vrmFolder = Path.Combine(Application.persistentDataPath, "VRM");
-        if (Directory.Exists(vrmFolder))
-            Directory.Delete(vrmFolder, true);
-
+        // Reset means reload Carlotta, never restore another/default model.
         ClearPreviousCustomModel(skipRawImageCleanup: true);
-        EnableMainModel();
 
         if (SaveLoadHandler.Instance != null)
         {
-            SaveLoadHandler.Instance.data.selectedModelPath = "";
+            SaveLoadHandler.Instance.data.selectedModelPath = GetCarlottaPathForSave();
+            SaveLoadHandler.Instance.data.enableRandomAvatar = false;
             SaveLoadHandler.Instance.SaveToDisk();
         }
 
-        if (MEModLoader.Instance != null && mainModel != null)
-            MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
+        string carlottaPath = FindCarlottaPath();
+        if (!string.IsNullOrEmpty(carlottaPath))
+            LoadVRM(carlottaPath);
+    }
 
-        StartCoroutine(ReleaseRamAndUnloadAssetsCo());
+    public void ActivateDefaultModel()
+    {
+        // Compatibility shim: ZOYA has no selectable default avatar.
+        ResetModel();
+    }
+
+    public GameObject GetCurrentModel()
+    {
+        return currentModel;
+    }
+
+    private string FindCarlottaPath()
+    {
+        if (SaveLoadHandler.Instance != null)
+        {
+            string saved = SaveLoadHandler.Instance.data.selectedModelPath;
+            if (IsCarlottaPath(saved) && File.Exists(saved))
+                return saved;
+        }
+
+        string[] candidates =
+        {
+            Path.Combine(Path.GetDirectoryName(Application.dataPath) ?? string.Empty, CarlottaFileName),
+            Path.Combine(Application.persistentDataPath, CarlottaFileName),
+            Path.Combine(Application.streamingAssetsPath, CarlottaFileName)
+        };
+
+        return candidates.FirstOrDefault(p => !string.IsNullOrEmpty(p) && File.Exists(p));
+    }
+
+    private string GetCarlottaPathForSave()
+    {
+        return FindCarlottaPath() ?? CarlottaFileName;
+    }
+
+    private bool IsCarlottaPath(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return false;
+
+        return string.Equals(
+            Path.GetFileName(path.Trim()),
+            CarlottaFileName,
+            StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void HideLegacyModelUi()
+    {
+        if (loadVRMButton != null)
+            loadVRMButton.gameObject.SetActive(false);
+
+        // Hide any old buttons whose serialized UnityEvent still points at the
+        // legacy model importer/library. This avoids requiring a risky manual
+        // scene rewrite while preserving all unrelated UI.
+        foreach (var button in FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (button == null)
+                continue;
+
+            bool legacy = false;
+            int count = button.onClick.GetPersistentEventCount();
+            for (int i = 0; i < count; i++)
+            {
+                string method = button.onClick.GetPersistentMethodName(i);
+                if (method == nameof(OpenFileDialogAndLoadVRM) ||
+                    method == "OpenLibrary" ||
+                    method == "LoadAvatar" ||
+                    method == "LoadVRM")
+                {
+                    legacy = true;
+                    break;
+                }
+            }
+
+            if (legacy)
+                button.gameObject.SetActive(false);
+        }
+
+        // Also hide the library panel itself if it is present.
+        var library = FindFirstObjectByType<AvatarLibraryMenu>();
+        if (library != null)
+            library.HideForZoya();
     }
 
     private void DisableMainModel()
@@ -351,19 +291,12 @@ public class VRMLoader : MonoBehaviour
             mainModel.SetActive(false);
     }
 
-    private void EnableMainModel()
-    {
-        if (mainModel != null)
-            mainModel.SetActive(true);
-    }
-
     private void ClearPreviousCustomModel(bool skipRawImageCleanup = false)
     {
         if (customModelOutput != null)
         {
             foreach (Transform child in customModelOutput.transform)
             {
-                if (child.gameObject == mainModel) continue;
                 CleanupRawImages(child.gameObject);
                 Destroy(child.gameObject);
             }
@@ -396,7 +329,8 @@ public class VRMLoader : MonoBehaviour
 
     private void InjectComponentsFromPrefab(GameObject prefabTemplate, GameObject targetModel)
     {
-        if (prefabTemplate == null || targetModel == null) return;
+        if (prefabTemplate == null || targetModel == null)
+            return;
 
         var templateObj = Instantiate(prefabTemplate);
         var animator = targetModel.GetComponentInChildren<Animator>();
@@ -404,19 +338,24 @@ public class VRMLoader : MonoBehaviour
         foreach (var templateComp in templateObj.GetComponents<MonoBehaviour>())
         {
             var type = templateComp.GetType();
-            if (targetModel.GetComponent(type) != null) continue;
+            if (targetModel.GetComponent(type) != null)
+                continue;
+
             var newComp = targetModel.AddComponent(type);
             CopyComponentValues(templateComp, newComp);
 
             if (animator != null)
             {
                 var setAnimMethod = type.GetMethod("SetAnimator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (setAnimMethod != null) setAnimMethod.Invoke(newComp, new object[] { animator });
+                if (setAnimMethod != null)
+                    setAnimMethod.Invoke(newComp, new object[] { animator });
 
                 var animatorField = type.GetField("animator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (animatorField != null && animatorField.FieldType == typeof(Animator)) animatorField.SetValue(newComp, animator);
+                if (animatorField != null && animatorField.FieldType == typeof(Animator))
+                    animatorField.SetValue(newComp, animator);
             }
         }
+
         Destroy(templateObj);
     }
 
@@ -429,8 +368,10 @@ public class VRMLoader : MonoBehaviour
             if (field.IsDefined(typeof(SerializeField), true) || field.IsPublic)
                 field.SetValue(destination, field.GetValue(source));
         }
+
         var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                        .Where(p => p.CanWrite && p.GetSetMethod(true) != null);
+            .Where(p => p.CanWrite && p.GetSetMethod(true) != null);
+
         foreach (var prop in props)
         {
             try { prop.SetValue(destination, prop.GetValue(source)); }
@@ -446,97 +387,36 @@ public class VRMLoader : MonoBehaviour
             stats.RefreshNow();
     }
 
-    public int GetTotalPolygons(GameObject model)
-    {
-        int total = 0;
-        foreach (var meshFilter in model.GetComponentsInChildren<MeshFilter>(true))
-        {
-            var mesh = meshFilter.sharedMesh;
-            if (mesh != null)
-                total += mesh.triangles.Length / 3;
-        }
-        foreach (var skinned in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
-        {
-            var mesh = skinned.sharedMesh;
-            if (mesh != null)
-                total += mesh.triangles.Length / 3;
-        }
-        return total;
-    }
-
-    public void ActivateDefaultModel()
-    {
-        ClearPreviousCustomModel(skipRawImageCleanup: true);
-        EnableMainModel();
-
-        if (SaveLoadHandler.Instance != null)
-        {
-            SaveLoadHandler.Instance.data.selectedModelPath = "";
-            SaveLoadHandler.Instance.SaveToDisk();
-        }
-
-        if (MEModLoader.Instance != null && mainModel != null)
-            MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
-
-        StartCoroutine(ReleaseRamAndUnloadAssetsCo());
-        SettingsHandlerUtility.ReloadAllSettingsHandlers();
-    }
-
     private System.Collections.IEnumerator ReleaseRamAndUnloadAssetsCo()
     {
         yield return Resources.UnloadUnusedAssets();
         yield return null;
-        System.GC.Collect();
-        System.GC.WaitForPendingFinalizers();
-        System.GC.Collect();
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
     }
 
     private void CleanupRawImages(GameObject obj)
     {
-        if (obj == null) return;
-        var rawImages = obj.GetComponentsInChildren<RawImage>(true);
-        foreach (var rawImage in rawImages)
+        if (obj == null)
+            return;
+
+        foreach (var rawImage in obj.GetComponentsInChildren<RawImage>(true))
             rawImage.texture = null;
     }
 
     private void CleanupAllRawImagesInScene()
     {
-        var rawImages = GameObject.FindObjectsByType<RawImage>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        foreach (var rawImage in rawImages)
+        foreach (var rawImage in FindObjectsByType<RawImage>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             rawImage.texture = null;
     }
 
-    private bool IsDLCReference(string path)
+    private void ClearPreviousCustomModelForLegacy()
     {
-#if UNITY_EDITOR
-        if (path.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase))
-            return true;
-#endif
-        if (!File.Exists(path) && !path.EndsWith(".vrm") && !path.EndsWith(".me"))
-            return true;
-        return false;
-    }
-
-    private GameObject FindDLCByName(string name)
-    {
-        var library = FindFirstObjectByType<AvatarLibraryMenu>();
-        if (library == null) return null;
-        foreach (var dlc in library.dlcAvatars)
-        {
-#if UNITY_EDITOR
-            string assetPath = AssetDatabase.GetAssetPath(dlc.prefab);
-            if (assetPath == name) return dlc.prefab;
-#endif
-            if (dlc.prefab != null && dlc.prefab.name == name) return dlc.prefab;
-        }
-        return null;
-    }
-
-    public GameObject GetCurrentModel()
-    {
-        return currentModel;
+        ClearPreviousCustomModel();
     }
 }
+
 public sealed class GltfInstanceDisposer : MonoBehaviour
 {
     private UniGLTF.RuntimeGltfInstance inst;
