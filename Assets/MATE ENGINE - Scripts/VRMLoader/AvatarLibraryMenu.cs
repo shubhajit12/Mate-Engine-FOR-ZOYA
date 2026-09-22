@@ -70,11 +70,35 @@ public class AvatarLibraryMenu : MonoBehaviour
 
     private void Start()
     {
+        // ZOYA companion: users do not select, import, or randomize avatars.
+        HideZoyaModelSelectionUi();
+
         if (!Directory.Exists(thumbnailsFolder))
             Directory.CreateDirectory(thumbnailsFolder);
 
         LoadAvatarList();
         RefreshUI();
+    }
+
+    private void HideZoyaModelSelectionUi()
+    {
+        if (SaveLoadHandler.Instance != null)
+        {
+            SaveLoadHandler.Instance.data.enableRandomAvatar = false;
+            SaveLoadHandler.Instance.SaveToDisk();
+        }
+
+        foreach (var go in FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (go == null)
+                continue;
+
+            if (go.name == "LoadModel" || go.name == "Random Avatar")
+                go.SetActive(false);
+        }
+
+        if (libraryPanel != null)
+            libraryPanel.SetActive(false);
     }
 
     public void OpenLibrary()
