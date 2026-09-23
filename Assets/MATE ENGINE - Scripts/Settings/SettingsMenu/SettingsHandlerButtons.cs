@@ -22,6 +22,75 @@ public class SettingsHandlerButtons : MonoBehaviour
     public GameObject uniWindowControllerObject;
     private UniWindowController uniWindowController;
 
+    private void HideZoyaExcludedSettings()
+    {
+        // ZOYA keeps Mate's settings/right-click panel and chat system, but
+        // removes Mate-only promotional/integration entries from the UI.
+        // Do not touch the shared panel roots or any chat objects.
+        string[] hiddenLabels =
+        {
+            "MINECRAFT INTEGRATION",
+            "MINECRAFT MESSAGES",
+            "STEAM DLCs",
+            "STEAM DLCS",
+            "DISCORD RICH PRESENCE",
+            "DISCORD RPC",
+            "DISCORD",
+            "FOOD SYSTEM",
+            "FOOD"
+        };
+
+        foreach (var text in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (text == null) continue;
+            var value = text.text?.Trim();
+            if (string.IsNullOrEmpty(value)) continue;
+
+            foreach (var label in hiddenLabels)
+            {
+                if (string.Equals(value, label, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    // Only hide the immediate UI control containing the label.
+                    // Never disable higher-level settings/menu parents.
+                    var target = text.transform.parent != null
+                        ? text.transform.parent.gameObject
+                        : text.gameObject;
+                    target.SetActive(false);
+                    break;
+                }
+            }
+        }
+
+        // Some integration panels do not expose their title through the same
+        // text component. Hide only their named leaf objects, never ancestors.
+        string[] hiddenObjectNames =
+        {
+            "MinecraftPanel",
+            "Minecraft Messages",
+            "DiscordPresence",
+            "Discord RPC",
+            "Steam DLCs",
+            "STEAM DLCS",
+            "FoodPanel",
+            "Food System",
+            "Food"
+        };
+
+        foreach (var transform in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (transform == null) continue;
+
+            foreach (var objectName in hiddenObjectNames)
+            {
+                if (string.Equals(transform.name, objectName, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    transform.gameObject.SetActive(false);
+                    break;
+                }
+            }
+        }
+    }
+
     private void HideModelManagementButtons()
     {
         // ZOYA uses one fixed companion model: Carlotta.vrm.
@@ -44,6 +113,7 @@ public class SettingsHandlerButtons : MonoBehaviour
     private void Start()
     {
         HideModelManagementButtons();
+        HideZoyaExcludedSettings();
         if (applyButton != null) applyButton.onClick.AddListener(OnApplyClicked);
         if (resetButton != null) resetButton.onClick.AddListener(OnResetClicked);
         if (windowSizeButton != null) windowSizeButton.onClick.AddListener(CycleWindowSize);
@@ -54,7 +124,6 @@ public class SettingsHandlerButtons : MonoBehaviour
         else
             uniWindowController = FindFirstObjectByType<UniWindowController>();
     }
-
 
     private void OnApplyClicked()
     {
@@ -101,6 +170,7 @@ public class SettingsHandlerButtons : MonoBehaviour
         }
         SaveLoadHandler.Instance.SaveToDisk();
     }
+
     private void OnRefreshAppsClicked()
     {
         var appManager = FindFirstObjectByType<AllowedAppsManager>();
